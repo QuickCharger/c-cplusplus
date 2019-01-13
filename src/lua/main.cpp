@@ -5,6 +5,61 @@
 using namespace std;
 
 lua_State* L;
+int tId = -1;
+
+/*
+* 返回值是压栈的数量, 即返回值的数量, 此处只返回n/2这一个值 所以返回1
+*/
+int halfValue(lua_State *L)
+{
+	int n = 0;
+	if (lua_isinteger(L, -1))
+	{
+		n = lua_tonumber(L, -1);
+		//cout << __FUNCTION__ << ". get value: " << n << endl;
+		lua_pop(L, 1);
+	}
+	lua_pushinteger(L, n/2);
+	return 1;
+}
+
+int luaAsy(lua_State* L)
+{
+	if (lua_isfunction(L, -1))
+	{
+		tId = luaL_ref(L, LUA_REGISTRYINDEX);		// 保存该线程 ?
+		if (tId == LUA_REFNIL || tId == LUA_NOREF)
+		{
+			cout << "err. cannot ref thread" << endl;
+			return 0;
+		}
+		cout << "save lua thread. id: " << tId << endl;
+	}
+	//lua_pop(L, 1);
+	if (lua_isinteger(L, -1))
+	{
+		int n = lua_tonumber(L, -1);
+		cout << "10 + 2 = "<< n << endl;
+	}
+	lua_pop(L, 1);
+	return 0;
+}
+
+/*
+* 最后填充null 是lua规定, 原文如下:
+* Any array of luaL_Reg must end with a sentinel entry in which both name and func are NULL.
+*/
+static const luaL_Reg cpplib[] = {
+	{"halfValue", halfValue},
+	{"asy", luaAsy},
+	{nullptr, nullptr}
+};
+
+int cppFunc(lua_State* L)
+{
+	luaL_newlib(L, cpplib);
+	return 1;
+}
 
 int main(int argc, char* argv[])
 {
@@ -17,6 +72,9 @@ int main(int argc, char* argv[])
 		goto end;
 	}
 
+	/*
+	* Opens all standard Lua libraries
+	*/
 	luaL_openlibs(L);
 
 	/*
@@ -133,7 +191,7 @@ int main(int argc, char* argv[])
 	cout << endl;
 
 	/*
-	* 调用lua
+	* 调用lua, 压栈顺序: 函数名 参数
 	*/
 	{
 		lua_getglobal(L, "add");
@@ -147,10 +205,57 @@ int main(int argc, char* argv[])
 			lua_pop(L, 1);
 		}
 	}
+	cout << endl;
 
 	/*
-	* lua调c++ 并回调
+	* lua调c++
 	*/
+	{
+		luaL_requiref(L, "cppFunc", cppFunc, 1);
+
+		int x = 10;
+		int y = 2;
+		lua_getglobal(L, "add2");
+		lua_pushinteger(L, x);
+		lua_pushinteger(L, y);
+		lua_call(L, 2, 1, 0);
+		if (lua_isinteger(L, -1))
+		{
+			n = lua_tonumber(L, -1);
+			cout << "halfValue("<< x << ")" << "+" << y << "= " << n << endl;
+			lua_pop(L, 1);
+		}
+	}
+	cout << endl;
+
+	/*
+	* lua调c++ c++回调lua
+	*/
+	{
+		//luaL_requiref(L, "cppFunc", cppFunc, 1);
+
+		int x = 10;
+		int y = 2;
+		lua_getglobal(L, "add_asy");
+		lua_pushinteger(L, x);
+		lua_pushinteger(L, y);
+		lua_call(L, 2, 2, 0);
+
+		x = 10;
+		lua_rawgeti(L, LUA_REGISTRYINDEX, tId);		// 线程入栈
+		lua_pushinteger(L, x);
+		lua_call(L, 1, 1, 0);
+		int type = lua_type(L, -1);
+		if (type == LUA_TNUMBER)
+		{
+			n = lua_tonumber(L, -1);
+			cout << "Asy call. input " << x << ". output " << n << endl;
+		}
+		lua_pop(L, 1);
+		luaL_unref(L, LUA_REGISTRYINDEX, tId);		// 解除tId线程 ?
+		cout << "unsave lua thread. id: " << tId << endl;
+	}
+
 
 	end:
 	lua_close(L);
