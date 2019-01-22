@@ -36,14 +36,14 @@ class B {
 };
 
 class C {
-	virtual void func() {};
-	int i3;
-	int i4;
-	long long ll;
-	char ch[5];
-	int i1;
-	int i2;
-	char b;
+	virtual void func() {};		// 8
+	int i3;						// 8
+	int i4;						// 0
+	long long ll;				// 8
+	char ch[5];					// 8
+	int i1;						// 8
+	int i2;						// 0
+	char b;						// 8
 };
 
 #define SIZEOF(T) cout << "sizeof(" << #T  << "): "<<  sizeof(T) << endl;
@@ -56,7 +56,9 @@ int main()
 
 	SIZEOF(B);
 
-	cout << "over" << std::endl;
+	SIZEOF(C);
+
+	cout << endl << "over" << std::endl;
 	getchar();
 
 	return 0;
