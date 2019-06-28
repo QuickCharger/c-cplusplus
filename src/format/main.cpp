@@ -19,7 +19,10 @@ int main(int argc, char **argv)
 	int type = parseType(context);
 	if (type == TYPE::eJson)
 	{
-		parseJson(context, newContext);
+		if (!parseJson_lib(context, newContext))
+		{
+			parseJson(context, newContext);
+		}
 	}
 	else if (type == TYPE::eXML)
 	{

@@ -2,6 +2,8 @@
 #include <map>
 #include <string>
 
+#include "json"
+
 using namespace std;
 
 enum TYPE
@@ -138,6 +140,18 @@ int parseType(const string &str)
 			return TYPE::eXML;
 	}
 	return TYPE::eUNKNOWN;
+}
+
+bool parseJson_lib(const string& src, string &dst)
+{
+	Json::Reader reader;
+	Json::Value v;
+	if (!reader.parse(src, v))
+	{
+		return false;
+	}
+	dst = v.toStyledString();
+	return true;
 }
 
 void parseJson(const string &src, string &dst)
