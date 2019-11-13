@@ -135,5 +135,22 @@ int main()
 		DefaultTemplateArgument<float>(1.2f, 3);
 	}
 
+	/*
+	* 变长参数模板
+	* https://changkun.de/modern-cpp/zh-cn/02-usability/index.html#%E5%8F%98%E9%95%BF%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF
+	* 没啥好写的
+	*/
+
+	/*
+	* 折叠表达式
+	* https://blog.csdn.net/ding_yingzi/article/details/79973809
+	* 只看懂皮毛，不写测试了
+	*/
+
+	/*
+	* lambda
+	* lambda的捕获列表和参数列表的使用场景不同。捕获列表捕获的是上下文的环境 创建时即获取，参数列表是调用时传参。
+	* https://www.cprogramming.com/c++11/c++11-lambda-closures.html    How are Lambda Closures Implemented? 该节有描述c++中lambda的实现方式
+	*/
 	getchar();
 }
