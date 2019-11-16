@@ -102,8 +102,8 @@ void test() {
 
 void RValueTest()
 {
-	//testCopy();
-	//testAssign();
-	//testRValue();
+	testCopy();
+	testAssign();
+	testRValue();
 	test();
 }
