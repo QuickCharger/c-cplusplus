@@ -161,6 +161,11 @@ int main()
 	* 这个文章写的明白易懂
 	* https://juejin.im/post/59c3932d6fb9a00a4b0c4f5b
 	* https://www.ibm.com/developerworks/cn/aix/library/1307_lisl_c11/index.html
+	*
+	* 表面上看只是增加了一个引用符号，但它对 C++ 软件设计和类库的设计有非常大的影响。
+	* 它既能简化代码，又能提高程序运行效率。每一个 C++ 软件设计师和程序员都应该理解并能够应用它。
+	* 我们在设计类的时候如果有动态申请的资源，也应该设计转移构造函数和转移拷贝函数。
+	* 在设计类库时，还应该考虑 std::move 的使用场景并积极使用它。
 	*/
 	RValueTest();
 
