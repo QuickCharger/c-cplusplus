@@ -1,12 +1,15 @@
 ﻿/*
-* 本测试依据 https://changkun.de/modern-cpp/zh-cn/02-usability/index.html#if-switch-%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%E5%BC%BA%E5%8C%96 一步一步来的
-* cplusplus 11 14 17 20详细功能和编译器支持度，参考如下链接
+*	c++11 参考链接
+*	https://zh.wikipedia.org/wiki/C%2B%2B11
+*	http://www.stroustrup.com/C++11FAQ.html
+*
+*	cplusplus 11 14 17 20详细功能和编译器支持度，参考如下链接
 *	https://zh.cppreference.com/w/cpp/compiler_support
-
 *	vs2015不支持c++17， 想要测试就用g++ -std=c++1z
 */
 
 #include "../common.h"
+#include "rvalue.hpp"
 
 struct Foo {
 	Foo(std::initializer_list<int> l)
@@ -152,5 +155,14 @@ int main()
 	* lambda的捕获列表和参数列表的使用场景不同。捕获列表捕获的是上下文的环境 创建时即获取，参数列表是调用时传参。
 	* https://www.cprogramming.com/c++11/c++11-lambda-closures.html    How are Lambda Closures Implemented? 该节有描述c++中lambda的实现方式
 	*/
+
+	/*
+	* 右值引用 和 move
+	* 这个文章写的明白易懂
+	* https://juejin.im/post/59c3932d6fb9a00a4b0c4f5b
+	* https://www.ibm.com/developerworks/cn/aix/library/1307_lisl_c11/index.html
+	*/
+	RValueTest();
+
 	getchar();
 }
