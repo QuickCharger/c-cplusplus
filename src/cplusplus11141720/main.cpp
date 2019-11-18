@@ -2,6 +2,7 @@
 *	c++11 参考链接
 *	https://zh.wikipedia.org/wiki/C%2B%2B11
 *	http://www.stroustrup.com/C++11FAQ.html
+*	https://changkun.de/modern-cpp/zh-cn/02-usability/index.html		// 简单易懂
 *
 *	cplusplus 11 14 17 20详细功能和编译器支持度，参考如下链接
 *	https://zh.cppreference.com/w/cpp/compiler_support
@@ -10,21 +11,6 @@
 
 #include "../common.h"
 #include "rvalue.hpp"
-
-struct Foo {
-	Foo(std::initializer_list<int> l)
-	{
-		m_v = std::move(l);
-	}
-
-	void test_initializer_list(std::initializer_list<int> l)
-	{
-		m_v = std::move(l);
-	}
-
-private:
-	vector<int> m_v;
-};
 
 std::tuple<int, double, std::string> TestTuple()
 {
@@ -46,6 +32,31 @@ auto DefaultTemplateArgument(T x, U y) -> decltype(x + y) {
 	return x + y;
 }
 
+constexpr int GetFive() {
+	return 5;
+}
+
+struct Foo {
+	Foo() {
+	}
+
+	Foo(std::initializer_list<int> l) {
+		m_v = std::move(l);
+	}
+
+	void test_initializer_list(std::initializer_list<int> l) {
+		m_v = std::move(l);
+	}
+
+private:
+	vector<int> m_v;
+};
+
+struct Foo_POD {
+	std::string name;
+	int id;
+};
+
 int main()
 {
 	/*
@@ -53,16 +64,6 @@ int main()
 	* todo
 	*/
 
-
-	/*
-	* 初始化列表 initializer_list #include<initializer_list>
-	*	https://changkun.de/modern-cpp/zh-cn/02-usability/index.html#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8
-	*	{...} 作为参数时，会自动把该参数转为initializer_list类
-	*/
-	{
-		Foo f{ 1,2,3,4 };
-		f.test_initializer_list({ 2,3,4,5 });
-	}
 
 	/*
 	* tuple, tie, 结构化绑定 #include<typel>
@@ -74,52 +75,6 @@ int main()
 		cout << "x=" << x << ". y=" << y << ". z=" << z << endl;
 	}
 #endif
-
-	/*
-	* auto decltype
-	* auto就不说了
-	* decltype 返回操作数的数据类型，在此过程中，编译器分析表达式并得到它的类型，却不实际计算表达式的值。
-	* decltype 有坑. decltype会保留 const 指针 引用 的属性. 对指针进行解指针时要特别注意
-	*/
-	{
-		int i = 10;
-		decltype(i) ii = 11;			// 类型为int. 依据i的类型创建ii
-
-		const int constI = 1;
-		decltype(constI) constII = 2;	// 类型为const int. decltype会保留推断中的const， auto则不会!!!
-
-
-		const int *ptrConstI = nullptr;
-		decltype(ptrConstI) ptrConstII = nullptr;	// 类型为const int *. decltype会保留推断中的const 和 *， auto则不会!!!
-
-		int &refI = i;
-		decltype(refI) refII = i;		// 类型为int&. decltype会保留推断中的引用!!!
-		decltype((i)) refIII = i;		// 双层括号表示引用!!!
-
-		const int &constRefI = i;
-		decltype(constRefI) constRefII = i;	// 类型为const int&. decltype会保留推断中的引用 和 const!!!
-		decltype((constI)) constRefIII = i;	// 双层括号表示引用!!!
-
-		int* pI = &i;
-		decltype(pI) pII = nullptr;		// 类型为int*. decltype会保留推断中的指针!!!
-		decltype(*pI) refIIII = i;		// 类型为int&. 表达式内容为解引用操作,类型为 int& ！！！！！！！！！
-	}
-
-	/*
-	* for迭代
-	*/
-	{
-		std::vector<int> v = { 1,2,3,4 };
-		cout << "before: ";
-		for (auto it : v)		// read only
-			std::cout << it;
-		for (auto &it : v)		// writeable
-			it += 1;
-		cout << endl << "after: ";
-		for (auto it : v)		// read only
-			std::cout << it;
-		cout << endl;
-	}
 
 	/*
 	* using 为了解决不能typedef模板的问题
@@ -157,7 +112,7 @@ int main()
 	*/
 
 	/*
-	* 右值引用 和 move
+	* 3.1 右值引用和move语义
 	* 这个文章写的明白易懂
 	* https://juejin.im/post/59c3932d6fb9a00a4b0c4f5b
 	* https://www.ibm.com/developerworks/cn/aix/library/1307_lisl_c11/index.html
@@ -168,6 +123,99 @@ int main()
 	* 在设计类库时，还应该考虑 std::move 的使用场景并积极使用它。
 	*/
 	RValueTest();
+
+	/*
+	* 3.2 constexpr – 泛化的常量表示式
+	*/
+	{
+		int v[GetFive() + 11];		// 此为合法写法
+	}
+
+	/*
+	* 3.3 对POD定义的修正
+	*/
+
+	/*
+	* 4.1 外部模板
+	*/
+
+	/*
+	* 5.1 初始化列表 
+	* #include<initializer_list>
+	* https://changkun.de/modern-cpp/zh-cn/02-usability/index.html#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8
+	* {...} 作为参数时，会自动把该参数转为initializer_list类
+	*/
+	{
+		Foo f = { 1,2,3,4 };
+		f.test_initializer_list({ 2,3,4,5 });
+	}
+
+	/*
+	* 5.2 统一的初始化
+	* https://blog.csdn.net/wocacaaa/article/details/25784861 通俗易懂
+	* https://www.cnblogs.com/me115/p/4800777.html#h29 通俗易懂
+	* 即 所有类型均可使用{}初始化
+	*/
+	{
+		/*
+		* 以下写法在类类型为POD时可编译通过，依照类中成员的出现顺序依次初始化。 是早期可编译通过的写法
+		*/
+		Foo_POD f{"qwer", 1};
+		Foo_POD f2 = { "qwer", 1 };
+	}
+
+	/*
+	* 5.3 类型推导
+	* auto decltype
+	* auto就不说了
+	* decltype 返回操作数的数据类型，在此过程中，编译器分析表达式并得到它的类型，却不实际计算表达式的值。
+	* decltype 有坑. decltype会保留 const 指针 引用 的属性. 对指针进行解指针时要特别注意
+	*/
+	{
+		int i = 10;
+		decltype(i) ii = 11;			// 类型为int. 依据i的类型创建ii
+
+		const int constI = 1;
+		decltype(constI) constII = 2;	// 类型为const int. decltype会保留推断中的const， auto则不会!!!
+
+
+		const int *ptrConstI = nullptr;
+		decltype(ptrConstI) ptrConstII = nullptr;	// 类型为const int *. decltype会保留推断中的const 和 *， auto则不会!!!
+
+		int &refI = i;
+		decltype(refI) refII = i;		// 类型为int&. decltype会保留推断中的引用!!!
+		decltype((i)) refIII = i;		// 双层括号表示引用!!!
+
+		const int &constRefI = i;
+		decltype(constRefI) constRefII = i;	// 类型为const int&. decltype会保留推断中的引用 和 const!!!
+		decltype((constI)) constRefIII = i;	// 双层括号表示引用!!!
+
+		int* pI = &i;
+		decltype(pI) pII = nullptr;		// 类型为int*. decltype会保留推断中的指针!!!
+		decltype(*pI) refIIII = i;		// 类型为int&. 表达式内容为解引用操作,类型为 int& ！！！！！！！！！
+	}
+
+	/*
+	* 5.4 基于范围的for循环
+	*/
+	{
+		std::vector<int> v = { 1,2,3,4 };
+		for (auto it : v)		// read only
+			std::cout << it;
+		for (auto &it : v)		// writeable
+			it += 1;
+		cout << endl << "after: ";
+		for (auto it : v)		// read only
+			std::cout << it;
+		cout << endl;
+	}
+
+	/*
+	* 5.5 Lambda函数与表示式
+	*/
+	{
+		// todo
+	}
 
 	getchar();
 }
