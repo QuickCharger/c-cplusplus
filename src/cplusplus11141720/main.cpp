@@ -60,12 +60,6 @@ struct Foo_POD {
 int main()
 {
 	/*
-	* if/switch变量声明强化
-	* todo
-	*/
-
-
-	/*
 	* tuple, tie, 结构化绑定 #include<typel>
 	*	https://zh.cppreference.com/w/cpp/utility/tuple
 	*/
@@ -346,12 +340,21 @@ int main()
 
 	/*
 	* 7.7 可扩展的随机数功能
-	* TODO
+	* https://zh.cppreference.com/w/cpp/numeric/random
 	*/
+	{
+		std::random_device rd;
+		unsigned int i = rd();
+
+		uniform_int_distribution<unsigned> u(0, 9);
+		std::default_random_engine rd2;
+		auto generator = std::bind(u, rd2);
+		unsigned int i2 = generator();
+	}
 
 	/*
 	* 7.8 包装引用
-	* 是代码越发的混乱， 最好别用
+	* 使代码越发的混乱， 最好别用
 	*/
 
 	/*
@@ -379,6 +382,23 @@ int main()
 	/*
 	* 7.12 iota 函数
 	*/
+
+	/*
+	* if/switch变量声明强化
+	*/
+	{
+#ifndef WIN32
+		if (bool b = true; false)		// false, g++17可编译过
+		{
+			cout << "true" << endl;
+		}
+#endif
+
+		if (true, false)				// false
+		{
+			cout << "true" << endl;
+		}
+	}
 
 	getchar();
 }
