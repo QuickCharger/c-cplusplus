@@ -77,16 +77,6 @@ int main()
 #endif
 
 	/*
-	* using 为了解决不能typedef模板的问题
-	*/
-	{
-		typedef int(*process)(void*);		// 两个语句有相同的效果
-		using NewProcess = int(*)(void*);
-
-		TrueDarkMagic<bool> you;
-	}
-
-	/*
 	* 默认模板参数
 	*/
 	{
@@ -94,21 +84,9 @@ int main()
 	}
 
 	/*
-	* 变长参数模板
-	* https://changkun.de/modern-cpp/zh-cn/02-usability/index.html#%E5%8F%98%E9%95%BF%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF
-	* 没啥好写的
-	*/
-
-	/*
 	* 折叠表达式
 	* https://blog.csdn.net/ding_yingzi/article/details/79973809
 	* 只看懂皮毛，不写测试了
-	*/
-
-	/*
-	* lambda
-	* lambda的捕获列表和参数列表的使用场景不同。捕获列表捕获的是上下文的环境 创建时即获取，参数列表是调用时传参。
-	* https://www.cprogramming.com/c++11/c++11-lambda-closures.html    How are Lambda Closures Implemented? 该节有描述c++中lambda的实现方式
 	*/
 
 	/*
@@ -212,10 +190,195 @@ int main()
 
 	/*
 	* 5.5 Lambda函数与表示式
+	* lambda的捕获列表和参数列表的使用场景不同。捕获列表捕获的是上下文的环境 创建时即获取，参数列表是调用时传参。
+	* https://www.cprogramming.com/c++11/c++11-lambda-closures.html    How are Lambda Closures Implemented? 该节有描述c++中lambda的实现方式
 	*/
 	{
-		// todo
+		// 没啥可写的
 	}
+
+	/*
+	* 5.6 返回类型后置的函数声明
+	* 模板的返回类型可以自行推导了
+	*/
+
+	/*
+	* 5.7 对象构造的改良
+	* C++11允许构造函数调用其他构造函数
+	*/
+
+	/*
+	* 5.8 显式虚函数重载
+	* override 用于显式指定重写了父类的函数，必须要有完全一致的函数签名
+	* final 用于显式指定 类避免被继承 或 类成员禁止被覆盖或重写
+	*/
+
+	/*
+	* 5.9 空指针
+	* c++11之前，NULL是(int)0。 和0有歧义。 c中NULL的类型为(void*)0
+	* 新引入的nullptr类型是nullptr_t, 能隐式转换为任何指针或是成员指针的类型
+	*/
+
+	/*
+	* 5.10 强类型枚举
+	* 枚举的类型为类，貌似没啥用。
+	*/
+
+	/*
+	* 5.11 角括号
+	*/
+
+	/*
+	* 5.12 显式类型转换子
+	*/
+
+	/*
+	* 5.13 模板的别名
+	* 可以定义模板的别名
+	* 可以定义一般类型的别名，等同typedef
+	*/
+	{
+		TrueDarkMagic<bool> you;			// 定义模板的别名，使用using创建了新的模板
+
+		typedef int(*process)(void*);		// 两个语句有相同的效果
+		using NewProcess = int(*)(void*);
+	}
+
+	/*
+	* 5.14 无限制的unions
+	* 越来越混乱了
+	*/
+
+	/*
+	* 6.1 可变参数模板
+	* https://changkun.de/modern-cpp/zh-cn/02-usability/index.html#%E5%8F%98%E9%95%BF%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF
+	*/
+	{
+		// 没啥好写的，编译时...展开
+		// 有空需要详细整理， TODO
+	}
+
+	/*
+	* 6.2 新的字符串字面值
+	* raw string 可以和 u8 u U 配合使用
+	*/
+	{
+		char *p		= u8"This is a UTF-8 string";
+		char16_t *p2 = u"This is a UTF-16 string";
+		char32_t *p3 = U"This is a UTF-32 string";
+		char *P4 = R"(This is a raw string \s )";		// "(string)" 格式
+	}
+
+	/*
+	* 6.3 用户定义字面量
+	*/
+
+	/*
+	* 6.4 多任务内存模型
+	*/
+	{
+		// TODO
+	}
+
+	/*
+	* 6.5 thread-local的存储期限
+	* https://stackoverflow.com/questions/11983875/what-does-the-thread-local-mean-in-c11
+	*/
+
+	/*
+	* 6.6 使用或禁用对象的默认函数
+	*/
+
+	/*
+	* 6.7 long long int类型
+	* 在32位系统上，一个long long int是保有至少64个有效比特的整数类别
+	*/
+
+	/*
+	* 6.8 静态assertion
+	*/
+
+	/*
+	* 6.9 允许sizeof运算符作用在类别的数据成员上，无须明确的对象
+	*/
+
+	/*
+	* 6.10 垃圾回收机制
+	*/
+
+	/*
+	* 7.1 标准库组件上的升级
+	*/
+
+	/*
+	* 7.2 线程支持
+	*/
+	{
+		/*
+		* 锁 std::mutex，std::recursive_mutex
+		* RAII机制 std::lock_guard和std::unique_lock
+		* std::async
+		* TODO
+		*/
+	}
+
+	/*
+	* 7.3 多元组类型
+	* 多元组可被视为是struct其数据成员的一般化
+	* 对传参和返回值有便利
+	*/
+
+	/*
+	* 7.4 散列表
+	*/
+
+	/*
+	* 7.5 正则表达式
+	*/
+
+	/*
+	* 7.6 通用智能指针
+	* shared_ptr
+	* unique_ptr
+	* weak_ptr
+	* TODO
+	*/
+
+	/*
+	* 7.7 可扩展的随机数功能
+	* TODO
+	*/
+
+	/*
+	* 7.8 包装引用
+	* 是代码越发的混乱， 最好别用
+	*/
+
+	/*
+	* 7.9 多态函数对象包装器
+	* 即 function模板
+	*/
+	{
+		std::function<int(int, int)> func;
+		func = [](int, int)->int { return 1; };
+		if (func)
+		{
+			cout << func(1,2) << endl;
+		}
+	}
+
+	/*
+	* 7.10 用于元编程的类型属性
+	* 此种编程技巧能写出优美、简洁的代码；然而调试是此种编程技巧的弱处：编译期的错误消息让人不知所云，运行期的调试更是困难。
+	*/
+
+	/*
+	* 7.11 用于计算函数对象回返类型的统一方法
+	*/
+
+	/*
+	* 7.12 iota 函数
+	*/
 
 	getchar();
 }

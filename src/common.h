@@ -13,4 +13,8 @@
 #include <condition_variable>
 #include <future>
 
+#include <regex>
+
+#include <numeric>
+
 using namespace std;
