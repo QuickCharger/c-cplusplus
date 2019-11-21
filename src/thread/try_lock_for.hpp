@@ -4,7 +4,7 @@ volatile int counter_try_lock_for(0);
 std::timed_mutex mtx_timed;
 
 /*
-* try_lock_for(t) ，在t时间范围内等待获得锁，如果时间段内获得了锁 上锁 返回true。如果时间段内没上锁，返回false。
+* try_lock_for(t) ，在t时间范围内等待获得锁。如果时间段内获得了锁 上锁 返回true。如果超过了这段时间依旧没上锁，返回false。
 */
 void attempt_10k_increases_try_lock_for()
 {
@@ -27,10 +27,7 @@ int do_try_lock_for()
 		threads[i] = std::thread(attempt_10k_increases_try_lock_for);
 	}
 
-	for (auto& th : threads)
-	{
-		th.join();
-	}
+	std::for_each(threads, threads + THREAD_MAX, [](std::thread& t) { t.join(); });
 
 	std::cout << counter_try_lock_for << " successful increases of the counter_try_lock_for.\n";
 

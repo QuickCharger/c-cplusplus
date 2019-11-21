@@ -28,10 +28,7 @@ int do_recursive_mutex()
 		threads[i] = std::thread(attempt_10k_increases_recursive_mutex);
 	}
 
-	for (auto& th : threads)
-	{
-		th.join();
-	}
+	std::for_each(threads, threads + THREAD_MAX, [](std::thread& t) { t.join(); });
 
 	std::cout << counter_recursive_mutex << " successful increases of the counter_recursive_mutex.\n";
 

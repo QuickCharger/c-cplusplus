@@ -8,6 +8,7 @@
 #include "try_lock.hpp"
 #include "recursive_mutex.hpp"
 #include "try_lock_for.hpp"
+#include "try_lock_until.hpp"
 
 using namespace std;
 
@@ -80,6 +81,8 @@ int main()
 	do_recursive_mutex();
 	cout << "==== do_try_lock_for ====" << endl;
 	do_try_lock_for();
+	cout << "==== do_try_lock_until ====" << endl;
+	do_try_lock_until();
 
 	getchar();
 

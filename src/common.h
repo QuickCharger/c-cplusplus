@@ -32,3 +32,5 @@
 #endif
 
 using namespace std;
+
+#define THREAD_MAX 10

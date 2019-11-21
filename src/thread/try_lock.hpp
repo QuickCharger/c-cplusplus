@@ -27,10 +27,7 @@ int do_try_lock()
 		threads[i] = std::thread(attempt_10k_increases_try_lock);
 	}
 
-	for (auto& th : threads)
-	{
-		th.join();
-	}
+	std::for_each(threads, threads + THREAD_MAX, [](std::thread& t) { t.join(); });
 
 	std::cout << counter_try_lock << " successful increases of the counter_try_lock.\n";
 
