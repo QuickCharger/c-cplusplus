@@ -1,15 +1,13 @@
-#include <iostream>
-#include <thread>
-#include <chrono>
-#include <functional>
-#include<utility>
-#include<future>
-#include<atomic>
-#include <windows.h>
-#include <vector>
-#include <set>
-#include <map>
-#include <list>
+/*
+* ²Î¿¼×Ô https://www.cnblogs.com/haippy/p/3284540.html
+*/
+
+#include "../common.h"
+
+#include "lock.hpp"
+#include "try_lock.hpp"
+#include "recursive_mutex.hpp"
+#include "try_lock_for.hpp"
 
 using namespace std;
 
@@ -32,12 +30,9 @@ void func(int* a, int size, std::promise<int> &promiseObj)
 int main()
 {
 	int nMax = 100;
-	int* arr = new int[nMax];
-	memset(arr, 0, nMax);
-	for (int i = 0; i <= nMax; ++i)
-	{
-		arr[i] = i;
-	}
+	int* arr = new int[nMax] {0};
+	int nIndex = 0;
+	std::for_each(arr, arr + nMax, [&nIndex](int & i) { i = nIndex++; });
 
 	std::promise<int> promiseObj1;
 	std::future<int> futureObj1 = promiseObj1.get_future();
@@ -76,6 +71,15 @@ int main()
 
 		std::cout << "total: " << i1 + i2 + i3 + i4 << std::endl;
 	}
+
+	cout << "==== do_lock ====" << endl;
+	do_lock();
+	cout << "==== do_trylock ====" << endl;
+	do_try_lock();
+	cout << "==== do_recurisve_mutex ====" << endl;
+	do_recursive_mutex();
+	cout << "==== do_try_lock_for ====" << endl;
+	do_try_lock_for();
 
 	getchar();
 

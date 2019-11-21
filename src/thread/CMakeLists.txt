@@ -1,4 +1,5 @@
+file(GLOB CPP *.cpp)
+file(GLOB HPP *.hpp)
 
-ADD_EXECUTABLE(thread
-	main.cpp
+ADD_EXECUTABLE(thread ${CPP} ${HPP}
 )

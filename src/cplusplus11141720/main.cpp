@@ -249,7 +249,6 @@ int main()
 	*/
 	{
 		// 没啥好写的，编译时...展开
-		// 有空需要详细整理， TODO
 	}
 
 	/*
@@ -277,6 +276,8 @@ int main()
 	/*
 	* 6.5 thread-local的存储期限
 	* https://stackoverflow.com/questions/11983875/what-does-the-thread-local-mean-in-c11
+	* thread_local变量在每个线程中都有一份自己的拷贝
+	* 详看thread项目
 	*/
 
 	/*
@@ -398,6 +399,13 @@ int main()
 		{
 			cout << "true" << endl;
 		}
+	}
+
+	/*
+	* sleep_for()是c++11引进的标准sleep方法，可以做到时间精确控制。之前的Sleep()是winAPI
+	*/
+	{
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));		//sleep for 100 ms. Can be use in both windows and Unix environment
 	}
 
 	getchar();
