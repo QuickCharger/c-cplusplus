@@ -9,6 +9,8 @@
 #include "recursive_mutex.hpp"
 #include "try_lock_for.hpp"
 #include "try_lock_until.hpp"
+#include "lock_guard.hpp"
+#include "unique_lock.hpp"
 
 using namespace std;
 
@@ -73,6 +75,15 @@ int main()
 		std::cout << "total: " << i1 + i2 + i3 + i4 << std::endl;
 	}
 
+
+	/*
+	* 如下是有关和线程的各种测试
+	* 互斥量
+	*		mutex			基本互斥量
+	*		recursive_mutex	互斥量可在一个线程内被多次上锁
+	*		timed_mutex		和时间有关的锁，可以在给定的时间内等待上锁，超出时间如果依旧没得到锁，直接返回false
+	*		recursive_timed_mutex	没看
+	*/
 	cout << "==== do_lock ====" << endl;
 	do_lock();
 	cout << "==== do_trylock ====" << endl;
@@ -83,6 +94,10 @@ int main()
 	do_try_lock_for();
 	cout << "==== do_try_lock_until ====" << endl;
 	do_try_lock_until();
+	cout << "==== do_lock_guard ====" << endl;
+	do_lock_guard();
+	cout << "==== do_unique_lock ====" << endl;
+	do_unique_lock();
 
 	getchar();
 

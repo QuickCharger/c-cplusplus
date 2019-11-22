@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../common.h"
 
 volatile int counter_try_lock(0);
@@ -21,13 +23,10 @@ void attempt_10k_increases_try_lock()
 
 int do_try_lock()
 {
-	std::thread threads[10];
-	for (int i = 0; i < 10; ++i)
-	{
-		threads[i] = std::thread(attempt_10k_increases_try_lock);
-	}
+	std::thread threads[THREAD_MAX];
 
-	std::for_each(threads, threads + THREAD_MAX, [](std::thread& t) { t.join(); });
+	for (auto& it : threads) it = std::thread(attempt_10k_increases_try_lock);
+	for (auto& it : threads) it.join();
 
 	std::cout << counter_try_lock << " successful increases of the counter_try_lock.\n";
 

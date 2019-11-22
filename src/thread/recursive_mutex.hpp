@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../common.h"
 
 volatile int counter_recursive_mutex(0);
@@ -22,13 +24,10 @@ void attempt_10k_increases_recursive_mutex()
 
 int do_recursive_mutex()
 {
-	std::thread threads[10];
-	for (int i = 0; i < 10; ++i)
-	{
-		threads[i] = std::thread(attempt_10k_increases_recursive_mutex);
-	}
+	std::thread threads[THREAD_MAX];
 
-	std::for_each(threads, threads + THREAD_MAX, [](std::thread& t) { t.join(); });
+	for (auto& it : threads) it = std::thread(attempt_10k_increases_recursive_mutex);
+	for (auto& it : threads) it.join();
 
 	std::cout << counter_recursive_mutex << " successful increases of the counter_recursive_mutex.\n";
 
