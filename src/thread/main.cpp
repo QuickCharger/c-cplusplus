@@ -1,5 +1,7 @@
 /*
 * 参考自 https://www.cnblogs.com/haippy/p/3284540.html
+*
+* mutex 是 mutual exclusive 的缩写
 */
 
 #include "../common.h"
@@ -11,6 +13,9 @@
 #include "try_lock_until.hpp"
 #include "lock_guard.hpp"
 #include "unique_lock.hpp"
+#include "future.hpp"
+#include "condition_variable.hpp"
+#include "atomic.hpp"
 
 using namespace std;
 
@@ -98,6 +103,18 @@ int main()
 	do_lock_guard();
 	cout << "==== do_unique_lock ====" << endl;
 	do_unique_lock();
+
+	/*
+	* 锁的条件变量
+	*/
+	cout << "==== do_condition_variable ====" << endl;
+	do_condition_variable();
+
+	/*
+	* 原子操作
+	*/
+	cout << "==== do_atomic ====" << endl;
+	do_atomic();
 
 	getchar();
 
