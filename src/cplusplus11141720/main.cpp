@@ -38,6 +38,7 @@ constexpr int GetFive() {
 
 struct Foo {
 	Foo() {
+		m_v.clear();
 	}
 
 	Foo(std::initializer_list<int> l) {
@@ -223,7 +224,7 @@ int main()
 	*/
 
 	/*
-	* 5.12 显式类型转换子
+	* 5.12 显式类型转换
 	*/
 
 	/*
@@ -333,11 +334,25 @@ int main()
 
 	/*
 	* 7.6 通用智能指针
+	* unique_ptr 不能复制 只能被move
 	* shared_ptr
 	* unique_ptr
 	* weak_ptr
 	* TODO
 	*/
+	{
+		auto uniquePtr = std::make_unique<Foo>(Foo({ 1,2,3,4 }));
+		auto uniquePtr2 = std::move(uniquePtr);
+
+		auto sharedPtr = std::make_shared<Foo>(Foo({ 1,2,3,4 }));
+		auto sharedPtr2 = sharedPtr;
+
+		std::weak_ptr<Foo> weakPtr;
+		{
+			weakPtr = std::make_shared<Foo>(Foo{ 1,2,3,4 });
+		}
+		auto sharedPtr3 = weakPtr.lock();
+	}
 
 	/*
 	* 7.7 可扩展的随机数功能

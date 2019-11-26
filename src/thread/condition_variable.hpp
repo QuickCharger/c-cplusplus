@@ -2,6 +2,8 @@
 /*
 * 当 std::condition_variable 对象的某个 wait 函数被调用的时候，它使用 std::unique_lock(通过 std::mutex) 来锁住当前线程。
 * 当前线程会一直被阻塞，直到另外一个线程在相同的 std::condition_variable 对象上调用了 notification 函数来唤醒当前线程。
+*
+* wait(lock) 的说明在 https://zh.cppreference.com/w/cpp/thread/condition_variable/wait 里有说明，会解锁lock
 */
 #include "../common.h"
 
@@ -14,7 +16,7 @@ void attempt_do_condition_variable(int id)
 	std::unique_lock<std::mutex> lck(mtx_condition_lock);
 	while (!ready_condition_lock)
 	{
-		cv.wait(lck);				// 此处执行wait会导致mtx_condition_lock取消上锁，原因不明， 有空需要再整理condition_lock。 TODO
+		cv.wait(lck);
 	}
 	std::cout << "thread " << id << endl;
 }
