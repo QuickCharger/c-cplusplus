@@ -335,10 +335,6 @@ int main()
 	/*
 	* 7.6 通用智能指针
 	* unique_ptr 不能复制 只能被move
-	* shared_ptr
-	* unique_ptr
-	* weak_ptr
-	* TODO
 	*/
 	{
 		auto uniquePtr = std::make_unique<Foo>(Foo({ 1,2,3,4 }));
