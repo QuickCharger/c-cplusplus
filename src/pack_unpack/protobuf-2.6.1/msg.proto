@@ -1,0 +1,40 @@
+message MSG {
+	optional bool	bool_optional	= 1;
+	required bool	bool_required	= 2;
+	repeated bool	bool_repeated	= 3;		// size 10
+
+	optional int32	int_optional	= 4;
+	required int32	int_required	= 5;
+	repeated int32	int_repeated	= 6;		// size 10
+
+	optional int64	int64_optional	= 7;
+	required int64	int64_required	= 8;
+	repeated int64	int64_repeated	= 9;		// size 10
+	
+	optional string	string_optional	= 10;
+	required string	string_required	= 11;
+	repeated string	string_repeated	= 12;		// size 10
+
+	message T
+	{
+		optional bool	bool_optional	= 1;
+		required bool	bool_required	= 2;
+		repeated bool	bool_repeated	= 3;	// size 10
+
+		optional int32	int_optional	= 4;
+		required int32	int_required	= 5;
+		repeated int32	int_repeated	= 6;	// size 10
+
+		optional int64	int64_optional	= 7;
+		required int64	int64_required	= 8;
+		repeated int64	int64_repeated	= 9;	// size 10
+	
+		optional string	string_optional	= 10;
+		required string	string_required	= 11;
+		repeated string	string_repeated	= 12;	// size 10
+	}
+
+	optional T	T_optional = 13;
+	required T	T_required = 14;
+	repeated T	T_repeated = 15;
+}
