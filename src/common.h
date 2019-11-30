@@ -29,6 +29,8 @@
 
 #include <random>
 
+#include <functional>
+
 #ifdef _WINDOWS
 #include <windows.h>
 #endif
