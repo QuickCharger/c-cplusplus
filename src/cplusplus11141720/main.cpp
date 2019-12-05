@@ -27,6 +27,24 @@ public:
 template<typename T>
 using TrueDarkMagic = MagicType<std::vector<T>, std::string>;
 
+template<int>
+struct int_exact_traits {
+	typedef int type;
+};
+
+template<>
+struct int_exact_traits<8> {
+	typedef char type;
+};
+
+template<>
+struct int_exact_traits<16> {
+	typedef short type;
+};
+
+template<int N>
+using int_exat = typename int_exact_traits<N>::type;
+
 template<typename T = int, typename U = int>
 auto DefaultTemplateArgument(T x, U y) -> decltype(x + y) {
 	return x + y;
@@ -177,9 +195,9 @@ int main()
 			std::cout << it;
 		for (auto &it : v)		// writeable
 			it += 1;
-		cout << endl << "after: ";
-		for (auto it : v)		// read only
-			std::cout << it;
+		for (auto it : { 1,2,3,4,5 })
+			std::cout << it << " ";
+
 		cout << endl;
 	}
 
@@ -419,5 +437,62 @@ int main()
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));		//sleep for 100 ms. Can be use in both windows and Unix environment
 	}
 
+	/*
+	* http://www.stroustrup.com/C++11FAQ.html#align
+	* https://zh.cppreference.com/w/cpp/language/alignas
+	*/
+	// sse_t 类型的每个对象将对齐到 16 字节边界
+	struct alignas(16) sse_t
+	{
+		float sse_data[4];
+	};
+
+	// 数组 "cacheline" 将对齐到 128字节边界
+	alignas(128) char cacheline[128];
+
+
 	getchar();
 }
+
+/*
+* http://stroustrup.com/C++11FAQ.html#default2
+* I strongly recommend that if you declare one of these five function, you explicitly declare all. For example:
+*/
+template<class T>
+class Handle {
+	T* p;
+public:
+	Handle(T* pp) : p{ pp } {}
+	~Handle() { delete p; }		// user-defined destructor: no implicit copy or move 
+
+	Handle(Handle&& h) :p{ h.p } { h.p = nullptr; }			// transfer ownership
+	Handle& operator=(Handle&& h) { delete p; p = h.p; h.p = nullptr; return *this; }	// transfer ownership
+
+	Handle(const Handle&) = delete;		// no copy
+	Handle& operator=(const Handle&) = delete;
+};
+
+/*
+* http://stroustrup.com/C++11FAQ.html#default2
+* User-defined literals
+*/
+int operator"" _toi(const char* p, size_t n)
+{
+	int ret;
+	ret = atoi(p);
+	return ret;
+}
+
+int aa = "123"_toi;
+
+std::string operator"" sa(const char* p, size_t n)	// std::string literal
+{
+	return string(p, n);	// requires free store allocation
+}
+std::string str = "asdf"sa;
+
+long long operator"" _km(long double a)
+{
+	return static_cast<long long>(a * 1000);
+}
+long long int distance_ = 100.1_km;
