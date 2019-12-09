@@ -79,6 +79,22 @@ void testRValue() {
 	printf("====destroy for stack====\n");
 }
 
+void process_value(int& i)
+{
+	std::cout << "LValue processed: " << i << std::endl;
+}
+
+void process_value(int&& i)
+{
+	std::cout << "RValue processed: " << i << std::endl;
+}
+
+void forward_value(int&& i)
+{
+	process_value(i);				// 调用process_value(int& i)
+	process_value(std::move(i));	// 调用process_value(int&& i)
+}
+
 void test() {
 	R r1("res1");
 	{
@@ -89,6 +105,13 @@ void test() {
 	}
 	std::vector<R> v;
 	v.push_back(std::move(r1));				// 由于c++11的vector::push_back新增加了push_back(&&)的定义。所以调用push_back时,如果arg是&&,则自动调用push_back(&&)
+
+	/*
+	* 以下实验说明右值引用依旧是左值类型，如果想保持右值引用传递，每次调用都要使用move()!!!
+	*/
+	{
+		forward_value(10);
+	}
 
 	/*
 	*				无&&构造								有&&构造
