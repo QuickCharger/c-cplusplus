@@ -95,6 +95,12 @@ void forward_value(int&& i)
 	process_value(std::move(i));	// 调用process_value(int&& i)
 }
 
+template<typename T>
+void perfect_forward(T&& t)			// 如果想完美转发，此为固定写法(T&& t), 模板展开期间产生的过多的引用会发生 "引用折叠"。
+{
+	process_value(std::forward<T>(t));
+}
+
 void test() {
 	R r1("res1");
 	{
@@ -121,6 +127,13 @@ void test() {
 	*	结论		兼容早期push_back()
 	*			push_back(&&) 如果对象没有&&构造，则使用其他构造。如果有&&构造，才使用&&构造。
 	*/
+
+
+	{
+		perfect_forward(10);
+		int i = 10;
+		perfect_forward(i);
+	}
 }
 
 void RValueTest()
