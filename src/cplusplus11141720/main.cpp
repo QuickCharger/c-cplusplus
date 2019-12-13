@@ -432,9 +432,12 @@ int main()
 
 	/*
 	* sleep_for()是c++11引进的标准sleep方法，可以做到时间精确控制。之前的Sleep()是winAPI
+	* c++14在标准库中添加了"标准自定义字面量"， "h"、"min"、"s"、"ms"、"us"、"ns"，用于创建相应的std::chrono::duration时间间隔。 详情见 https://zh.wikipedia.org/wiki/C%2B%2B14
 	*/
 	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));		//sleep for 100 ms. Can be use in both windows and Unix environment
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));	//sleep for 100 ms. Can be use in both windows and Unix environment
+		std::this_thread::sleep_for(100ns);								//sleep for 100 ns.
+		std::this_thread::sleep_for(1s);								//sleep for 1s.
 	}
 
 	/*
