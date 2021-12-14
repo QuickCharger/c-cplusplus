@@ -1,4 +1,4 @@
-﻿wget https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.5.tar.gz
+wget https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.5.tar.gz
 tar -zxf 1.9.5.tar.gz
 pushd jsoncpp-1.9.5
 mkdir tmp

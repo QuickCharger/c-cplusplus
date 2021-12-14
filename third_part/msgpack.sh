@@ -1,4 +1,4 @@
-﻿wget https://github.com/msgpack/msgpack-c/releases/download/cpp-4.0.3/msgpack-cxx-4.0.3.tar.gz
+wget https://github.com/msgpack/msgpack-c/releases/download/cpp-4.0.3/msgpack-cxx-4.0.3.tar.gz
 tar -zxf msgpack-cxx-4.0.3.tar.gz
 
 pushd msgpack-cxx-4.0.3/
