@@ -1,12 +1,10 @@
 wget https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.5.tar.gz
 tar -zxf 1.9.5.tar.gz
-pushd jsoncpp-1.9.5
-mkdir tmp
-pushd tmp
+
+mkdir jsoncpp-1.9.5/sln
+pushd jsoncpp-1.9.5/sln
 cmake -DCMAKE_INSTALL_PREFIX=`pwd`/../../jsoncpp ..
-make
-make install
-popd
+cmake --build . --target install --clean-first --config Release
 popd
 
 rm -rf 1.9.5.tar.gz
