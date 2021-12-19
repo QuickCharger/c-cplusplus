@@ -5,13 +5,10 @@ tar -zxf msgpack-cxx-4.0.3.tar.gz
 
 export PATH=`pwd`/boost:$PATH
 
-pushd msgpack-cxx-4.0.3/
-mkdir sln
-pushd sln
+mkdir msgpack-cxx-4.0.3/sln
+pushd msgpack-cxx-4.0.3/sln
 cmake -DCMAKE_INSTALL_PREFIX=`pwd`/../../msgpack ..
-make
-make install
-popd
+cmake --build . --target install --clean-first --config Release
 popd
 
 rm msgpack-cxx-4.0.3.tar.gz
