@@ -1,4 +1,4 @@
-锘縭em 闇�瑕佹墜鍔ㄦ墽琛屼笅闈㈢殑鍛戒护
+rem 需要手动执行下面的命令
 
 wget https://github.com/curl/curl/releases/download/curl-7_80_0/curl-7.80.0.tar.gz
 tar -zxf curl-7.80.0.tar.gz
