@@ -37,10 +37,10 @@ int main()
 	while (1)
 	{
 		SOCKET sockConn = accept(sockSrv, (SOCKADDR*)&addrClient, &len);
-		char sendBuf[50];
+		char sendBuf[50] = {};
 		sprintf(sendBuf, "Welcome %s to here!", inet_ntoa(addrClient.sin_addr));
 		send(sockConn, sendBuf, strlen(sendBuf) + 1, 0);
-		char recvBuf[50];
+		char recvBuf[50] = {};
 		recv(sockConn, recvBuf, 50, 0);
 		printf("%s\n", recvBuf);
 		closesocket(sockConn);
